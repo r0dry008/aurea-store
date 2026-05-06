@@ -1,3 +1,23 @@
+@php
+    $grops = [
+        'Platform' => [
+            [
+                'name'=> 'Dashboard',
+                'icon' => 'home',
+                'url' => route('dashboard'),
+                'current' => request()->routeIs('dashboard'),
+            ],
+            [
+                'name'=> 'Servicios',
+                'icon' => 'layout-grid',
+                'url' => route('admin.servicios.index'),
+                'current' => request()->routeIs('admin.servicios.*'),
+            ],
+
+        ]
+    ]
+@endphp
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
     <head>
@@ -12,11 +32,14 @@
             </a>
 
             <flux:navlist variant="outline">
-                <flux:navlist.group :heading="__('Platform')" class="grid">
-                    <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
-                </flux:navlist.group>
+                @foreach ($grops as $group => $links)
+                    <flux:navlist.group :heading="__('Platform')" class="grid">
+                        @foreach ($links as $link)
+                            <flux:navlist.item :icon="$link['icon']" :href="$link['url']" :current="$link['current']" wire:navigate>{{ $link['name'] }}</flux:navlist.item>
+                        @endforeach
+                    </flux:navlist.group>
+                @endforeach
             </flux:navlist>
-
             <flux:spacer />
 
             <flux:navlist variant="outline">
@@ -127,6 +150,8 @@
 
         {{ $slot }}
 
+        
         @fluxScripts
+
     </body>
 </html>

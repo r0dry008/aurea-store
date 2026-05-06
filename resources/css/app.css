@@ -26,6 +26,52 @@
     --color-accent: var(--color-neutral-800);
     --color-accent-content: var(--color-neutral-800);
     --color-accent-foreground: var(--color-white);
+
+    /* pinguinUI styles */
+    
+    /* Light Theme */
+    --color-surface: var(--color-gray-50);
+    --color-surface-alt: var(--color-gray-200);
+    --color-on-surface: var(--color-gray-800);
+    --color-on-surface-strong: var(--color-gray-950);
+    --color-primary: var(--color-sky-900);
+    --color-on-primary: var(--color-white);
+    --color-secondary: var(--color-indigo-900);
+    --color-on-secondary: var(--color-white);
+    --color-outline: var(--color-gray-500);
+    --color-outline-strong: var(--color-gray-900);
+
+    /* Dark Theme */
+    --color-surface-dark: var(--color-gray-900);
+    --color-surface-dark-alt: var(--color-gray-800);
+    --color-on-surface-dark: var(--color-gray-300);
+    --color-on-surface-dark-strong: var(--color-gray-100);
+    --color-primary-dark: var(--color-sky-400);
+    --color-on-primary-dark: var(--color-black);
+    --color-secondary-dark: var(--color-indigo-400);
+    --color-on-secondary-dark: var(--color-black);
+    --color-outline-dark: var(--color-gray-500);
+    --color-outline-dark-strong: var(--color-gray-300);
+
+    /* Shared Colors */
+    --color-info: var(--color-sky-500);
+    --color-on-info: var(--color-black);
+    --color-success: var(--color-green-500);
+    --color-on-success: var(--color-black);
+    --color-warning: var(--color-yellow-500);
+    --color-on-warning: var(--color-black);
+    --color-danger: var(--color-red-500);
+    --color-on-danger: var(--color-black);
+
+    /* Border Radius */
+    --radius-radius: var(--radius-md);
+
+
+    /* colores personalizados */
+    --color-primary-reverb: var(--color-sky-600);
+    --color-primary-foreground: #FFFFFF;
+
+
 }
 
 @layer theme {
@@ -64,3 +110,38 @@ select:focus[data-flux-control] {
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */
+
+/* elementos personalizados */
+.btn-primary {
+    @apply 
+    whitespace-nowrap 
+    rounded-radius 
+    bg-primary-reverb 
+    border 
+    border-primary-reverb 
+    px-4 
+    py-2 
+    text-base 
+    font-medium 
+    tracking-wide 
+    text-on-primary 
+    transition 
+    hover:opacity-75 
+    text-center 
+    focus-visible:outline-2 
+    focus-visible:outline-offset-2 
+    focus-visible:outline-primary-reverb 
+    active:opacity-100 
+    active:outline-offset-0 
+    disabled:opacity-75 
+    disabled:cursor-not-allowed 
+    dark:bg-primary-dark 
+    dark:border-primary-dark 
+    dark:text-on-primary-dark 
+    dark:focus-visible:outline-primary-dark
+
+    cursor-pointer
+    ;
+}
+
+
