@@ -25,8 +25,8 @@
             'current'=> request()->routeIs('reverb.contacto.*')
         ],
         [
-            'name'=> 'Catalogo',
-            'icon'=> '',
+            'name'=> 'Tienda',
+            'icon'=> 'shopping-bag',
             'url'=> route('reverb.catalog'),
             'current'=> request()->routeIs('reverb.catalog')
         ],
@@ -166,10 +166,10 @@
         mt-[100px]   /* margin-top: 100px; */
         {{-- mb-[10px]     /* margin-bottom: 0px; */ --}}
         px-6         /* padding horizontal base (similar a 24px/25px) */
-        md:px-12     /* Escala en pantallas medianas */
-        lg:px-24     /* Escala en pantallas grandes (simulando 12vw) */
-        xl:px-48     /* Escala mayor */
-        2xl:px-[335px] /* Máximo padding en pantallas muy grandes */
+        md:px-10     /* Escala en pantallas medianas */
+        lg:px-20     /* Escala en pantallas grandes (simulando 12vw) */
+        xl:px-40     /* Escala mayor */
+        2xl:px-[105px] /* Máximo padding en pantallas muy grandes */
         min-h-screen
     ">
         {{ $slot }}

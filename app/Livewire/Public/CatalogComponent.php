@@ -3,8 +3,10 @@
 namespace App\Livewire\Public;
 
 use App\Models\Product;
+use App\Models\Category;
 use Livewire\Attributes\Session;
 use Livewire\Component;
+use Illuminate\Http\Request;
 
 class CatalogComponent extends Component
 {
@@ -42,14 +44,34 @@ class CatalogComponent extends Component
         $this->dispatch('cart:Updated');
         $this->reset('cantidad');
     }
+    // lo necesario para traer solo los productos que tienen skus
+    // public function filterProducts(Request $request){
+    //     $products = Product::has('skus')->get();
+    //     return $products;
+    // }
 
+    // end filter products
 
+    // para traer las categorias de los productos
 
+    // end get categories
+    public $selectedCategoryId = null;
     public function render()
     {
-        $products = Product::all();
 
-        return view('livewire.public.catalog-component', compact('products'));
+    // traer las categorias de los productos
+        $navCategories = Category::whereNull('parent_id')->with('children')->get();
+        $query = Product::query();
+        if($this->selectedCategoryId){
+            $query->where('category_id', $this->selectedCategoryId);
+        }
+    //
+
+        $products = $query->get();
+        // $productSkus = $products->map(function ($product) {
+        //     return $product->skus;
+        // });
+        return view('livewire.public.catalog-component', compact('products', 'navCategories'));
     }
     public function index(){
         $this->render();
