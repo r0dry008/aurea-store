@@ -33,9 +33,3 @@ Route::middleware(['auth'])->group(function () {
         )
         ->name('two-factor.show');
 });
-Route::get('/catalog', function () {
-    return view('public.pages.catalog');
-})->name('reverb.catalog');
-Route::get('/cart', function () {
-    return view('public.pages.cart');
-})->name('reverb.cart');

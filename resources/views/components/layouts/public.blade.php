@@ -6,24 +6,24 @@
             'url'=> route('home'),
             'current'=> request()->routeIs('home')
         ],
-        [
-            'name'=> 'Servicios',
-            'icon'=> 'layout-grid',
-            'url'=> route('reverb.servicios.index'),
-            'current'=> request()->routeIs('reverb.servicios.*')
-        ],
-        [
-            'name'=> 'Precios',
-            'icon'=> 'layout-grid',
-            'url'=> route('reverb.precios.index'),
-            'current'=> request()->routeIs('reverb.precios.*')
-        ],
-        [
-            'name'=> 'Contacto',
-            'icon'=> 'phone',
-            'url'=> route('reverb.contacto.index'),
-            'current'=> request()->routeIs('reverb.contacto.*')
-        ],
+        // [
+        //     'name'=> 'Servicios',
+        //     'icon'=> 'layout-grid',
+        //     'url'=> route('reverb.servicios.index'),
+        //     'current'=> request()->routeIs('reverb.servicios.*')
+        // ],
+        // [
+        //     'name'=> 'Precios',
+        //     'icon'=> 'layout-grid',
+        //     'url'=> route('reverb.precios.index'),
+        //     'current'=> request()->routeIs('reverb.precios.*')
+        // ],
+        // [
+        //     'name'=> 'Contacto',
+        //     'icon'=> 'phone',
+        //     'url'=> route('reverb.contacto.index'),
+        //     'current'=> request()->routeIs('reverb.contacto.*')
+        // ],
         [
             'name'=> 'Tienda',
             'icon'=> 'shopping-bag',

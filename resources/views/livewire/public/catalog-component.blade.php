@@ -2,20 +2,25 @@
 
     <div class="max-w-[1400px] mx-auto px-8 py-6">
         
-        <div class="flex justify-between items-center mb-6 text-xs text-gray-500 font-medium">
-            <div>
-                Home &gt; Clothing &gt; <span class="text-gray-800">T-Shirts</span>
-            </div>
-            <div class="flex items-center space-x-6 text-sm">
-                <div class="cursor-pointer hover:text-black">Sort by <i class="fa-solid fa-chevron-down text-xs ml-1"></i></div>
-                <div class="flex items-center space-x-2">
-                    <span>View</span>
-                    <button class="text-blue-600 p-1"><i class="fa-solid fa-table-cells text-lg"></i></button>
-                    <button class="text-gray-400 hover:text-black p-1"><i class="fa-solid fa-list text-lg"></i></button>
-                </div>
-            </div>
-        </div>
+<nav class="flex items-center flex-wrap gap-2 py-4 text-sm text-gray-500 font-medium">
+    @foreach($breadcrumbs as $crumb)
+        @if(!$loop->first)
+            <span class="text-gray-300 select-none text-base">&rsaquo;</span>
+        @endif
 
+        @if($loop->last)
+            <span class="text-gray-900 font-bold capitalize">
+                {{ $crumb['label'] }}
+            </span>
+        @else
+            <button type="button" 
+                    wire:click="selectCategory({{ $crumb['id'] ?? 'null' }})" 
+                    class="hover:text-black transition duration-150 capitalize cursor-pointer focus:outline-hidden">
+                {{ $crumb['label'] }}
+            </button>
+        @endif
+    @endforeach
+</nav>
         <div class="flex flex-col lg:flex-row gap-8">
             
             <aside class="w-full lg:w-64 shrink-0 space-y-8">
@@ -152,22 +157,30 @@
             <div class="flex-1">
                 <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
                     {{-- card product --}}
-        @foreach ($products as $product)
+                   @foreach ($products as $product)
 
                     <div class="bg-[#FFFDF6] border border-gray-100 rounded-xl p-4 flex flex-col justify-between group transition">
-                        <div class="relative bg-[#FDFBF2] rounded-lg aspect-square flex items-center justify-center p-6 mb-4">
+                        <div class="relative bg-[#FDFBF2] rounded-lg aspect-square flex items-center justify-center">
                             <button class="absolute top-3 right-3 text-gray-400 hover:text-red-500 transition"><i class="fa-regular fa-heart text-lg"></i></button>
-                            <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=500&auto=format&fit=crop" alt="Black T-Shirt" class="max-h-full object-contain mix-blend-multiply">
+                            <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=500&auto=format&fit=crop" alt="Black T-Shirt" class="object-cover transition duration-700 ease-out group-hover:scale-105 cursor-pointer">
                         </div>
                         <div>
-                            <h3 class="font-bold text-sm text-black mb-1">{{ $product->name }}</h3>
+                            <a href="{{ route('reverb.product.show', $product->slug) }}" wire:navigate>
+                                <h3 class="font-bold text-3xl text-black mb-1">{{ $product->name }}</h3>
+                            </a>
                             <div class="flex space-x-1 mb-2">
                                 <span class="bg-gray-100 px-1.5 py-0.5 text-[10px] rounded text-gray-600">Black</span>
                                 <span class="bg-blue-100 px-1.5 py-0.5 text-[10px] rounded text-blue-600 font-bold">M</span>
                                 <span class="bg-gray-100 px-1.5 py-0.5 text-[10px] rounded text-gray-600">M</span>
                             </div>
                             <div class="flex justify-between items-center mt-4">
-                                <span class="font-bold text-sm text-black">{{ $product->price }}</span>
+                                <span class="font-bold text-sm text-black">   
+                                    @if($product->skus->isNotEmpty())
+                                        Bs.{{number_format($product->skus->first()->price, 2) }}
+                                    @else
+                                        Precio no disponible
+                                    @endif
+                                </span>
                                 <button wire:click="addToCart({{ $product->id }},{{ $cantidad }})" class="cursor-pointer bg-black hover:bg-gray-800 text-white text-xs font-semibold px-4 py-2 rounded-md tracking-wide transition">Add to Cart</button>
                             </div>
                         </div>
@@ -219,7 +232,13 @@
 
                 <h3 class="text-balance text-xl lg:text-2xl font-bold text-on-surface-strong dark:text-on-surface-dark-strong" aria-describedby="tripDescription">{{ $product->name }}</h3>
                 <div class="flex text-2xl items-center justify-center gap-1 font-medium">
-                    <span class="">Bs. {{ $product->price }}</span>
+                    <span class="">
+                        @if($product->skus->isNotEmpty())
+                            Bs.{{number_format($product->skus->first()->price, 2) }}
+                        @else
+                            Precio no disponible
+                        @endif
+                    </span>
                 </div>
                 <p id="tripDescription" class="text-pretty text-sm mb-2">
                     {{ $product->description }}
@@ -300,8 +319,4 @@
             </div>
         </article>
     @endforeach
-        @dump($cartItems)
-        //imprimir productSkus
-
-
 </div>
