@@ -8,6 +8,7 @@ use Livewire\Component;
 class ProductShow extends Component
 {
     public $product;
+    public $similarProducts = [];
     public $cantidad = 1;
     public array $selectedAttributes = [];
     public array $cartItems = [];
@@ -18,11 +19,27 @@ class ProductShow extends Component
     public function mount($slug)
     {
         $this->product = Product::where('slug', $slug)
-            ->with(['skus.attributeValues.attribute'])
+            ->activeProduct()
+            ->hasActiveSkus()
+
             ->firstOrFail();
+
+        $this->similarProducts = Product::where('category_id', $this->product->category_id)
+            ->where('id', '!=', $this->product->id)
+            ->activeProduct()
+            ->hasActiveSkus()
+            // ->whereHas('skus', fn($query)=> $query->where('is_active', true), '>=',1)
+            // ->with(['skus' => fn ($query) => $query->where('is_active', true)])
+            ->limit(4)
+            ->get();
+            // ->each(fn($product) => $product->loadMissing(['skus'=> fn($q)=>($q->where('is_active', true))]));
+        
 
         $this->cartItems = session()->get('cartItems', []);
     }
+    //funcion para mostrar un producto que no tenga stock pero tenga skus activos, mostrar un mensaje de "sin stock" y no permitir agregar al carrito
+
+    // public function 
 
     /**
      * Devuelve los atributos agrupados por attribute_id para la vista.
@@ -34,6 +51,7 @@ class ProductShow extends Component
     public function getGroupedAttributesProperty()
     {
         return $this->product->skus
+            ->where('is_active',true)
             ->flatMap(fn ($sku) => $sku->attributeValues)
             ->groupBy(fn ($value) => $value->attribute->id)
             ->mapWithKeys(fn ($values, $attributeId) => [
@@ -156,12 +174,23 @@ class ProductShow extends Component
 
         return false;
     }
+    public function sumaStockSkus (int $productId):bool|int
+    {
+        $product = Product::where('id',$productId)
+                            ->activeProduct()
+                            ->hasActiveSkus()
+                            ->with(['skus'=>fn($q)=>$q->activeSku()])
+                            ->first();
+        return $product->skus->sum('stock');
+
+    }
 
     public function render()
     {
         return view('livewire.public.product-show', [
             'groupedAttributes' => $this->groupedAttributes,
             'selectedSku' => $this->selectedSku,
+            'similarProducts' => $this->similarProducts,
         ])
             ->layout('components.layouts.public');
     }

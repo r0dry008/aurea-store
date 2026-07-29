@@ -62,6 +62,9 @@
             </flux:navbar>
 
             <flux:spacer />
+            <livewire:public.header-search-component />
+            <flux:spacer />
+
                <livewire:public.counter-component />
 
 

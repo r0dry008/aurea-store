@@ -5,16 +5,26 @@ namespace App\Livewire\Public;
 use App\Models\Product;
 use App\Models\Category;
 use Livewire\Component;
+use Livewire\Attributes\Url;
 
 class CatalogComponent extends Component
 {
     public $cantidad = 1;
     public array $cartItems = [];
+
+
+
+    #[Url(as: 'category')]
     public ?int $selectedCategoryId = null;
+    //variables para busqueda
+
+    #[Url(except: '')]
+    public ?string $search = '';
 
     // Usamos las propiedades reactivas en la URL con la sintaxis de Livewire 3
     protected $queryString = [
         'selectedCategoryId' => ['as' => 'category'],
+        'search' => ['except' => ''],
     ];
 
     public function mount()
@@ -28,6 +38,7 @@ class CatalogComponent extends Component
     public function selectCategory(?int $categoryId)
     {
         $this->selectedCategoryId = $categoryId;
+        $this->search = '';
         $this->reset('cantidad'); // Resetea selectores abiertos por si acaso
     }
 
@@ -112,20 +123,76 @@ class CatalogComponent extends Component
         $this->reset('cantidad');
     }
 
+
+    protected function descendantCategoryIds(int $categoryId): array
+    {
+        $ids = [$categoryId];
+
+        foreach (Category::where('parent_id', $categoryId)->pluck('id') as $childId) {
+            $ids = array_merge($ids, $this->descendantCategoryIds((int) $childId));
+        }
+
+        return array_values(array_unique($ids));
+    }
+    public function sumaStockSkus(int $productId):bool|int
+        { 
+            $product = Product::where('id', $productId)
+                                    ->activeProduct()
+                                    ->hasActiveSkus()
+                                    ->with(['skus'=>fn($q)=>$q->activeSku()])
+                                // ->with(['skus' => fn ($query) => $query->where('is_active', true)])
+
+                                    ->first();
+                                    if($product->skus->sum('stock')>0){
+                                        return true;
+                                    }
+                                    return false;
+            // return ;
+        }
+
     public function render()
     {
         // 1. Cargar categorías principales y sus hijos para la barra de navegación lateral/superior
         $navCategories = Category::whereNull('parent_id')->with('children')->get();
 
         // 2. Filtrar productos según la categoría seleccionada
-        $query = Product::query()->has('skus'); // Trae solo productos con stock/skus activos
+        $query = Product::query()->has('skus')->activeProduct()
+                                    ->hasActiveSkus(); // Trae solo productos con stock/skus activos
 
         if ($this->selectedCategoryId) {
-            $query->where('category_id', $this->selectedCategoryId);
+            $query->whereIn('category_id', $this->descendantCategoryIds($this->selectedCategoryId));
         }
 
-        $products = $query->with('skus')->get();
+        // metodo de busqueda de productos por nombre, categoria o descripcion
+        // 3. Si la categoría está seleccionada, filtra por categoría
+        if (! empty(trim($this->search))) {
+            $searchTerm = '%' . trim($this->search) . '%';
+            $matchingCategoryIds = Category::where('name', 'like', $searchTerm)
+                // ->where('is_active', true)
+                ->pluck('id')
+                ->all();
 
+            $categoryTreeIds = [];
+
+            foreach ($matchingCategoryIds as $categoryId) {
+                $categoryTreeIds = array_merge($categoryTreeIds, $this->descendantCategoryIds((int) $categoryId));
+            }
+
+            $categoryTreeIds = array_values(array_unique($categoryTreeIds));
+
+            $query->where(function ($subQuery) use ($searchTerm, $categoryTreeIds) {
+                $subQuery->where('name', 'like', $searchTerm)
+                    // ->where('is_active', true)
+                    ->orWhere('description', 'like', $searchTerm)
+                    ->when(! empty($categoryTreeIds), function ($query) use ($categoryTreeIds) {
+                        $query->orWhereIn('category_id', $categoryTreeIds);
+                    });
+            });
+        }
+        // end
+
+
+        $products = $query->with('skus')->get();
         // 3. Generar el árbol reactivo
         $breadcrumbs = $this->buildBreadcrumbs();
 

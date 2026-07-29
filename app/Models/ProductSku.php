@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Builder;
 
 class ProductSku extends Model
 {
@@ -25,5 +26,11 @@ class ProductSku extends Model
     public function attributeValues()
     {
         return $this->belongsToMany(AttributeValue::class, 'sku_attribute_values');
+    }
+
+    //scopes para filtrar SKUs activos
+    public function scopeActiveSku(Builder $query): void
+    {
+        $query->where('is_active', true);
     }
 }

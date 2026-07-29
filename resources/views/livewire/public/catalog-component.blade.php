@@ -1,6 +1,6 @@
 <div>
 
-    <div class="max-w-[1400px] mx-auto px-8 py-6">
+<div class="max-w-[1400px] mx-auto px-8 py-6">
         
 <nav class="flex items-center flex-wrap gap-2 py-4 text-sm text-gray-500 font-medium">
     @foreach($breadcrumbs as $crumb)
@@ -72,14 +72,14 @@
                                     class="relative mt-1 flex w-full flex-col overflow-hidden rounded-radius border border-outline bg-surface-alt dark:border-outline-dark dark:bg-surface-dark-alt shadow-sm z-10" 
                                     role="menu">
                                     
-                                    <button wire:click="$set('selectedCategoryId', {{ $parentCategory->id }})" x-on:click="isOpen = false" class="text-left bg-surface-alt px-4 py-2 text-xs font-bold text-blue-600 hover:bg-surface-dark-alt/5 cursor-pointer">
+                                    <button wire:click="selectCategory({{ $parentCategory->id }})" x-on:click="isOpen = false" class="text-left bg-surface-alt px-4 py-2 text-xs font-bold text-blue-600 hover:bg-surface-dark-alt/5 cursor-pointer">
                                         Ver todo
                                     </button>
                                     <hr class="border-outline/30 dark:border-outline-dark/30">
 
                                     @foreach ($parentCategory->children as $childCategory)
                                         <a href="#" 
-                                            wire:click.prevent="$set('selectedCategoryId', {{ $childCategory->id }})"
+                                            wire:click.prevent="selectCategory({{ $childCategory->id }})"
                                             x-on:click="isOpen = false, openedWithKeyboard = false"
                                             class="bg-surface-alt px-4 py-2 text-sm text-on-surface hover:bg-surface-dark-alt/5 hover:text-on-surface-strong focus-visible:bg-surface-dark-alt/10 focus-visible:text-on-surface-strong focus-visible:outline-hidden dark:bg-surface-dark-alt dark:text-on-surface-dark dark:hover:bg-surface-alt/5 dark:hover:text-on-surface-dark-strong dark:focus-visible:bg-surface-alt/10 dark:focus-visible:text-on-surface-dark-strong" 
                                             role="menuitem">
@@ -154,16 +154,28 @@
                 </div>
             </aside>
 
+
+
             <div class="flex-1">
-                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-4 gap-6">
                     {{-- card product --}}
                    @foreach ($products as $product)
 
+                        {{-- {{$this->sumaStockSkus($product->id)}} --}}
                     <div class="bg-[#FFFDF6] border border-gray-100 rounded-xl p-4 flex flex-col justify-between group transition">
+                        @if($this->sumaStockSkus($product->id))
                         <div class="relative bg-[#FDFBF2] rounded-lg aspect-square flex items-center justify-center">
                             <button class="absolute top-3 right-3 text-gray-400 hover:text-red-500 transition"><i class="fa-regular fa-heart text-lg"></i></button>
                             <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=500&auto=format&fit=crop" alt="Black T-Shirt" class="object-cover transition duration-700 ease-out group-hover:scale-105 cursor-pointer">
                         </div>
+                        @else
+                        <div class="relative bg-[#FDFBF2] rounded-lg aspect-square flex items-center justify-center">
+                            <button class="absolute top-3 right-3 text-gray-400 hover:text-red-500 transition"><i class="fa-regular fa-heart text-lg"></i></button>
+                            <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=500&auto=format&fit=crop" alt="Black T-Shirt" class="object-cover transition duration-700 ease-out group-hover:scale-105 cursor-pointer">
+                            <h2 class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">Agotado</h2>
+                        </div>
+
+                        @endif
                         <div>
                             <a href="{{ route('reverb.product.show', $product->slug) }}" wire:navigate>
                                 <h3 class="font-bold text-3xl text-black mb-1">{{ $product->name }}</h3>
@@ -181,31 +193,15 @@
                                         Precio no disponible
                                     @endif
                                 </span>
-                                <button wire:click="addToCart({{ $product->id }},{{ $cantidad }})" class="cursor-pointer bg-black hover:bg-gray-800 text-white text-xs font-semibold px-4 py-2 rounded-md tracking-wide transition">Add to Cart</button>
+                                {{-- <button wire:click="addToCart({{ $product->id }},{{ $cantidad }})" class="cursor-pointer bg-black hover:bg-gray-800 text-white text-xs font-semibold px-4 py-2 rounded-md tracking-wide transition">Add to Cart</button> --}}
+
+
+
                             </div>
                         </div>
                     </div>
                     @endforeach
-
                     {{-- end card product --}}
-                    {{-- <div class="bg-[#FFFDF6] border border-gray-100 rounded-xl p-4 flex flex-col justify-between group transition">
-                        <div class="relative bg-[#FDFBF2] rounded-lg aspect-square flex items-center justify-center p-6 mb-4">
-                            <button class="absolute top-3 right-3 text-gray-400 hover:text-red-500 transition"><i class="fa-regular fa-heart text-lg"></i></button>
-                            <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=500&auto=format&fit=crop" alt="Bag" class="max-h-full object-contain mix-blend-multiply">
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-sm text-black mb-1">Vaoonox's Bag</h3>
-                            <p class="text-gray-400 text-xs line-clamp-2 mb-2 leading-relaxed">Lorem quality dolor sit amet, in onsectetur adipiscing...</p>
-                            <div class="flex items-center text-amber-400 text-xs space-x-1 mb-3">
-                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                                <span class="text-gray-400 text-[10px] ml-1">(9)</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="font-bold text-sm text-black">$29.99</span>
-                                <button class="bg-black hover:bg-gray-800 text-white text-xs font-semibold px-4 py-2 rounded-md tracking-wide transition">Add to Cart</button>
-                            </div>
-                        </div>
-                    </div> --}}
                 </div>
                 <div class="flex justify-center items-center space-x-2 mt-12 text-sm font-semibold">
                     <button class="w-8 h-8 flex items-center justify-center bg-blue-600 text-white rounded-md shadow-sm">1</button>
@@ -243,7 +239,7 @@
                 <p id="tripDescription" class="text-pretty text-sm mb-2">
                     {{ $product->description }}
                 </p>
-                    <div class="" x-data="{modalIsOpen: false}">
+<div class="" x-data="{modalIsOpen: false}">
     <button x-on:click="modalIsOpen = true" type="button" class="btn-primary">Detalles</button>
     <div x-cloak x-show="modalIsOpen" x-transition.opacity.duration.200ms x-trap.inert.noscroll="modalIsOpen" x-on:keydown.esc.window="modalIsOpen = false" x-on:click.self="modalIsOpen = false" class="fixed inset-0 z-30 flex w-full items-center justify-center bg-black/20 p-4 pb-8 backdrop-blur-md lg:p-8" role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
         <!-- Modal Dialog -->
@@ -320,3 +316,6 @@
         </article>
     @endforeach
 </div>
+
+
+
