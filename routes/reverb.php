@@ -2,6 +2,7 @@
 
 use App\Livewire\Public\ProductShow;
 use App\Http\Controllers\Public\ServiceController;
+use App\Http\Middleware\EnsureCartIsNotEmpty;
 use Illuminate\Support\Facades\Route;
 
 Route::resource('servicios', ServiceController::class);
@@ -17,5 +18,6 @@ Route::get('cart', function () {
 })->name('cart');
 Route::get('checkout', function(){
     return view('public.pages.checkout');
-})->name('checkout');
+})->middleware(EnsureCartIsNotEmpty::class)
+->name('checkout');
 Route::get('productos/{slug}', ProductShow::class)->name('product.show');
