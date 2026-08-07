@@ -28,6 +28,9 @@ class Product extends Model
     {
         return $this->hasMany(ProductSku::class);
     }
+    public function orders(){
+        return $this->hasMany(OrderItem::class);
+    }
 
     // Scope para filtrar productos activos
     // public function scopeActive(Builder $query): void

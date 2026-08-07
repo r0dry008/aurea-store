@@ -21,9 +21,9 @@
             <input type="text" value="{{ $selectedSku?->stock ?? $product->skus->first()->stock ?? '' }}" > --}}
             <div class="space-y-6">
                 <hr class="border-gray-200">
+
 {{-- 
     //imprimir la cadena de atributos agrupados
-    
     // dump($groupedAttributes) --}}
                 {{-- Recorremos cada atributo disponible y mostramos sus valores --}}
                 @foreach($groupedAttributes as $attributeId => $group)
@@ -63,16 +63,18 @@
                     <button wire:click="decrement" type="button" class="cursor-pointer px-3 py-2 text-gray-500 hover:text-black transition">-</button>
                     {{-- $cantidad: cantidad de unidades seleccionadas para agregar al carrito --}}
                     <span class="px-4 font-semibold text-sm select-none">{{ $cantidad }}</span>
-                    <button wire:click="increment" type="button" class="cursor-pointer px-3 py-2 text-gray-500 hover:text-black transition">+</button>
+                    <button wire:click="increment({{$selectedSku->id??0}})" type="button" class="cursor-pointer px-3 py-2 text-gray-500 hover:text-black transition">+</button>
                 </div>
-                @if($selectedSku && $selectedSku->stock == 0 )
+                @if($selectedSku && $selectedSku->stock <= 0 )
 
                 <button type="button" class="flex-1 border bg-white text-black font-semibold py-3 rounded-md transition tracking-wide text-sm" disabled>
                     Producto no disponible
                 </button>
                 @else
+            {{-- {{dd($selectedSku->id??0)}} --}}
+
                 <button wire:click="addToCart" type="button" class="cursor-pointer flex-1 bg-black hover:bg-gray-800 text-white font-semibold py-3 rounded-md transition tracking-wide text-sm">
-                    Añadir al Carrito
+                    Añadir al Carrito{{$selectedSku->id??0}}
                 </button>
                 @endif
             </div>

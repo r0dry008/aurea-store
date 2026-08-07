@@ -3,6 +3,7 @@
 namespace App\Livewire\Public;
 
 use App\Models\Order;
+use App\Models\ProductSku;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -49,21 +50,34 @@ class CartComponent extends Component
         });
     }
 
-    public function increment($productId)
+    public function increment($itemId)
     {
-        if (isset($this->cartItems[$productId])) {
-            $this->cartItems[$productId]['cantidad']++;
-            $this->saveCartState();
+        if(!isset($this->cartItems[$itemId])){
+            return;
         }
+        $stockSku = ProductSku::findOrFail($itemId);
+        // if (isset($this->cartItems[$itemId])) {
+
+        if ($this->cartItems[$itemId]['cantidad']<$stockSku->stock) {
+            // if($this->cartItems[$itemId]['cantidad']++);
+            $this->cartItems[$itemId]['cantidad']++;
+            $this->saveCartState();
+            return;
+
+            }else{
+            session()->flash('warning',"Solo te quedan pocas uniudades disponibles");
+            return;
+            }
+
     }
 
-    public function decrement($productId)
+    public function decrement($itemId)
     {
-        if (isset($this->cartItems[$productId])) {
-            $this->cartItems[$productId]['cantidad']--;
+        if (isset($this->cartItems[$itemId])) {
+            $this->cartItems[$itemId]['cantidad']--;
 
-            if ($this->cartItems[$productId]['cantidad'] <= 0) {
-                unset($this->cartItems[$productId]);
+            if ($this->cartItems[$itemId]['cantidad'] <= 0) {
+                unset($this->cartItems[$itemId]);
             }
 
             $this->saveCartState();
@@ -81,40 +95,43 @@ class CartComponent extends Component
     /**
      * Guarda el pedido en la Base de Datos.
      */
-    public function saveOrder()
-    {
-        // Validación automática mediante las propiedades #[Rule]
-        $this->validate();
+    // public function saveOrder()
+    // {
+    //     // Validación automática mediante las propiedades #[Rule]
+    //     $this->validate();
 
-        if (empty($this->cartItems)) {
-            $this->addError('cart', 'No puedes procesar un pedido con el carrito vacío.');
-            return;
-        }
+    //     if (empty($this->cartItems)) {
+    //         $this->addError('cart', 'No puedes procesar un pedido con el carrito vacío.');
+    //         return;
+    //     }
 
-        // Crear la orden principal
-        $order = Order::create(
-            $this->only('name_client', 'phone_client', 'email', 'message', 'via')
-        );
+    //     // Crear la orden principal
+    //     $order = Order::create(
+    //         $this->only(        'customer_name',
+    //     'customer_email',
+    //     'customer_phone',
+    //     'shipping_address',)
+    //     );
 
-        // Guardar cada ítem asociado a la orden (Corregido con los índices reales)
-        foreach ($this->cartItems as $item) {
-            $order->orderItems()->create([
-                'product_id' => $item['product_id'], //  Corregido (Coincide con tu estructura de sesión)
-                'quantity'   => $item['cantidad'],
-                'price'      => $item['precio'],
-            ]);
-        }
+    //     // Guardar cada ítem asociado a la orden (Corregido con los índices reales)
+    //     foreach ($this->cartItems as $item) {
+    //         $order->orderItems()->create([
+    //             'product_id' => $item['product_id'], //  Corregido (Coincide con tu estructura de sesión)
+    //             'quantity'   => $item['cantidad'],
+    //             'price'      => $item['precio'],
+    //         ]);
+    //     }
 
-        // Limpiar la sesión del carrito y actualizar la propiedad local
-        session()->forget('cartItems');
-        $this->cartItems = [];
+    //     // Limpiar la sesión del carrito y actualizar la propiedad local
+    //     session()->forget('cartItems');
+    //     $this->cartItems = [];
 
-        // Notificar a componentes globales (como un contador del navbar)
-        $this->dispatch('cart:Updated');
+    //     // Notificar a componentes globales (como un contador del navbar)
+    //     $this->dispatch('cart:Updated');
 
-        // Redirección limpia
-        return redirect()->route('reverb.cart');
-    }
+    //     // Redirección limpia
+    //     return redirect()->route('reverb.cart');
+    // }
 
     /**
      * Método auxiliar privado para evitar repetir código (DRY).

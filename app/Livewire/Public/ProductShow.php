@@ -3,6 +3,7 @@
 namespace App\Livewire\Public;
 
 use App\Models\Product;
+use App\Models\ProductSku;
 use Livewire\Component;
 
 class ProductShow extends Component
@@ -65,9 +66,22 @@ class ProductShow extends Component
     /**
      * Incrementa la cantidad de producto a agregar al carrito.
      */
-    public function increment()
+    public function increment($itemID)
     {
+        // if(!isset($this->cartItems[$itemID])){
+        //     return;
+        // }
+
+        $stockSku = ProductSku::findOrFail($itemID);
+
+        if($this->cantidad<$stockSku->stock){
+        // if(s)
+
+        // dd($itemID);
+        // $this->
         $this->cantidad++;
+        return;
+        }
     }
 
     /**
@@ -143,6 +157,7 @@ class ProductShow extends Component
                 'sku_id' => $sku->id,
                 'product_id' => $this->product->id,
                 'nombre' => $this->product->name,
+                'sku_code'=>$sku->sku,
                 'precio' => $sku->price,
                 'cantidad' => $this->cantidad,
                 'detalles_variantes' => $detallesVariantes,

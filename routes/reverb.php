@@ -15,5 +15,7 @@ Route::get('catalog', function () {
 Route::get('cart', function () {
     return view('public.pages.cart');
 })->name('cart');
-
+Route::get('checkout', function(){
+    return view('public.pages.checkout');
+})->name('checkout');
 Route::get('productos/{slug}', ProductShow::class)->name('product.show');

@@ -27,6 +27,9 @@ class ProductSku extends Model
     {
         return $this->belongsToMany(AttributeValue::class, 'sku_attribute_values');
     }
+    public function orders(){
+        return $this->hasMany(OrderItem::class,'sku_id');
+    }
 
     //scopes para filtrar SKUs activos
     public function scopeActiveSku(Builder $query): void

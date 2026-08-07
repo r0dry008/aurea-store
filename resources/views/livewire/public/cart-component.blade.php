@@ -8,7 +8,7 @@
                     <div class="flex-shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden bg-gray-50 border border-gray-150">
                         <img src="{{ asset('images/kaneki.jpg') }}" alt="{{ $item['nombre'] }}" class="w-full h-full object-cover">
                     </div>
-                    
+                    {{-- {{dd($cartItems)}} --}}
                     <div class="flex-grow flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div class="space-y-1">
                             <h4 class="text-base sm:text-lg font-bold text-gray-900 leading-snug">{{ $item['nombre'] }}</h4>
@@ -48,6 +48,9 @@
             <div class="total-pedido flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
                 <p class="text-2xl font-bold text-gray-800">Total: Bs. {{ number_format($this->total(), 2) }}</p>
                 
+                    <a href="{{ route('reverb.checkout') }}" class="cursor-pointer whitespace-nowrap rounded-md bg-black text-white px-6 py-3 text-center text-sm font-semibold tracking-wide hover:bg-gray-800 transition shadow-sm">
+                        Confirmar pedido
+                    </a>
                 <div x-data="{ modalIsOpen: false }">
                     <button x-on:click="modalIsOpen = true" type="button" 
                             class="cursor-pointer whitespace-nowrap rounded-md bg-black text-white px-6 py-3 text-center text-sm font-semibold tracking-wide hover:bg-gray-800 transition shadow-sm">
