@@ -45,7 +45,7 @@
         </div>
 
         @if(count($cartItems) > 0)
-            <div class="total-pedido flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
+            <div class="total-pedido flex justify-between items-center mt-8 pt-6">
                 <p class="text-2xl font-bold text-gray-800">Total: Bs. {{ number_format($this->total(), 2) }}</p>
                 
                     <a href="{{ route('reverb.checkout') }}" class="cursor-pointer whitespace-nowrap rounded-md bg-black text-white px-6 py-3 text-center text-sm font-semibold tracking-wide hover:bg-gray-800 transition shadow-sm">

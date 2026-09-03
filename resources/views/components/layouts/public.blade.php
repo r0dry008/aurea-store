@@ -52,21 +52,20 @@
                 <x-app-logo />
             </a>
 
-            <flux:navbar class="-mb-px max-lg:hidden">
-                @foreach ($links as $link)                    
-                <flux:navbar.item :icon="$link['icon']" :href="$link['url']" :current="$link['current']" wire:navigate>
-                    {{ $link['name'] }}
-                </flux:navbar.item>
-                @endforeach
-
-            </flux:navbar>
+            <div class="flex items-center gap-1">
+                <flux:navbar class="-mb-px max-lg:hidden">
+                    @foreach ($links as $link)
+                    <flux:navbar.item :icon="$link['icon']" :href="$link['url']" :current="$link['current']" wire:navigate>
+                        {{ $link['name'] }}
+                    </flux:navbar.item>
+                    @endforeach
+                </flux:navbar>
+                <livewire:public.counter-component />
+            </div>
 
             <flux:spacer />
             <livewire:public.header-search-component />
             <flux:spacer />
-
-               <livewire:public.counter-component />
-
 
             <!-- Desktop User Menu -->
             @auth
@@ -169,9 +168,9 @@
         mt-[100px]   /* margin-top: 100px; */
         {{-- mb-[10px]     /* margin-bottom: 0px; */ --}}
         px-6         /* padding horizontal base (similar a 24px/25px) */
-        md:px-10     /* Escala en pantallas medianas */
-        lg:px-20     /* Escala en pantallas grandes (simulando 12vw) */
-        xl:px-40     /* Escala mayor */
+        md:px-5     /* Escala en pantallas medianas */
+        lg:px-10     /* Escala en pantallas grandes (simulando 12vw) */
+        xl:px-20     /* Escala mayor */
         2xl:px-[105px] /* Máximo padding en pantallas muy grandes */
         min-h-screen
     ">
@@ -179,8 +178,7 @@
     </main>
 
         @fluxScripts
-
-
+    {{-- cdn de swiperjs --}}
     </body>
 <footer class="footer bg-gray-100 border-t border-gray-300 font-sans">
     <!-- Contenedor principal con padding vertical y horizontal adaptable -->

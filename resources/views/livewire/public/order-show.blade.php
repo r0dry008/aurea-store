@@ -1,6 +1,6 @@
 <div>
     {{-- Nothing in the world is as soft and yielding as water. --}}
-    <div class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <div class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8 mt-0">
         <div class="lg:col-span-7">
             <form wire:submit.prevent="saveOrder"
              method="POST">

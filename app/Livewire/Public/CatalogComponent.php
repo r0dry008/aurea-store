@@ -9,8 +9,8 @@ use Livewire\Attributes\Url;
 
 class CatalogComponent extends Component
 {
-    public $cantidad = 1;
-    public array $cartItems = [];
+    // public $cantidad = 1;
+    // public array $cartItems = [];
 
 
 
@@ -27,10 +27,10 @@ class CatalogComponent extends Component
         'search' => ['except' => ''],
     ];
 
-    public function mount()
-    {
-        $this->cartItems = session()->get('cartItems', []);
-    }
+    // public function mount()
+    // {
+    //     $this->cartItems = session()->get('cartItems', []);
+    // }
 
     /**
      * 🔥 Acción reactiva: Cambia la categoría actual al hacer click en el Breadcrumb o menú.
@@ -39,7 +39,7 @@ class CatalogComponent extends Component
     {
         $this->selectedCategoryId = $categoryId;
         $this->search = '';
-        $this->reset('cantidad'); // Resetea selectores abiertos por si acaso
+        // $this->reset('cantidad'); // Resetea selectores abiertos por si acaso
     }
 
     /**
@@ -89,39 +89,39 @@ class CatalogComponent extends Component
         return $breadcrumbs;
     }
 
-    public function increment()
-    {
-        $this->cantidad++;
-    }
+    // public function increment()
+    // {
+    //     $this->cantidad++;
+    // }
 
-    public function decrement()
-    {
-        if ($this->cantidad > 1) {
-            $this->cantidad--;
-        }
-    }
+    // public function decrement()
+    // {
+    //     if ($this->cantidad > 1) {
+    //         $this->cantidad--;
+    //     }
+    // }
 
-    public function addToCart(int $id, int $cantidad)
-    {
-        $product = Product::find($id);
-        if (! $product) return;
+    // public function addToCart(int $id, int $cantidad)
+    // {
+    //     $product = Product::find($id);
+    //     if (! $product) return;
 
-        // Nota: Asegúrate de usar 'product_id' en lugar de 'id' para mantener simetría con tu saveOrder()
-        if (isset($this->cartItems[$id])) {
-            $this->cartItems[$id]['cantidad'] += $cantidad;
-        } else {            
-            $this->cartItems[$id] = [
-                'product_id' => $product->id, 
-                'nombre'     => $product->name,
-                'precio'     => $product->price,
-                'cantidad'   => $cantidad,
-            ];
-        }
+    //     // Nota: Asegúrate de usar 'product_id' en lugar de 'id' para mantener simetría con tu saveOrder()
+    //     if (isset($this->cartItems[$id])) {
+    //         $this->cartItems[$id]['cantidad'] += $cantidad;
+    //     } else {            
+    //         $this->cartItems[$id] = [
+    //             'product_id' => $product->id, 
+    //             'nombre'     => $product->name,
+    //             'precio'     => $product->price,
+    //             'cantidad'   => $cantidad,
+    //         ];
+    //     }
 
-        session()->put('cartItems', $this->cartItems);
-        $this->dispatch('cart:Updated');
-        $this->reset('cantidad');
-    }
+    //     session()->put('cartItems', $this->cartItems);
+    //     $this->dispatch('cart:Updated');
+    //     $this->reset('cantidad');
+    // }
 
 
     protected function descendantCategoryIds(int $categoryId): array
