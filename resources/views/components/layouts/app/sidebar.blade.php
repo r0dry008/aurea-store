@@ -13,6 +13,13 @@
                 'url' => route('admin.servicios.index'),
                 'current' => request()->routeIs('admin.servicios.*'),
             ],
+            [
+                'name'=> 'Categorias',
+                'icon' => 'layout-grid',
+                'url' => route('admin.category'),
+                'current' => request()->routeIs('admin.category'),
+            ],
+
 
         ]
     ]

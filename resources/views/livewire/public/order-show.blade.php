@@ -1,5 +1,4 @@
 <div>
-    {{-- Nothing in the world is as soft and yielding as water. --}}
     <div class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8 mt-0">
         <div class="lg:col-span-7">
             <form wire:submit.prevent="saveOrder"
@@ -107,20 +106,5 @@
         </div>
         
     </div>    
-    
 
-
-
-
-+------------------------------------------+-----------------------+
-|  COLUMNA IZQUIERDA (60%)                 | COLUMNA DERECHA (40%) |
-|                                          |                       |
-|  1. Datos del Cliente (Nombre, Email)    | Resumen del Pedido    |
-|  2. Dirección de Envío                   | - Producto A x2  $100 |
-|  3. Datos de Facturación (NIT/CI, Nombre)| - Producto B x1   $50 |
-|  4. Método de Pago (QR / Transferencia)  |                       |
-|                                          | Subtotal:         $150|
-|  [ BOTÓN COMPLETO: REALIZAR PEDIDO ]     | Envío:             $10|
-|                                          | TOTAL:            $160|
-+------------------------------------------+-----------------------+
 </div>

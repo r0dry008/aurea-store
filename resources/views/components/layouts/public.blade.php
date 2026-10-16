@@ -193,23 +193,10 @@
                 <!-- img | width: 150px; filter: brightness(0.9); transition: filter 0.3s ease; -->
                 <a href="#">
                     <!-- Se utiliza group-hover para aplicar efectos de transición y filtro al pasar el ratón por el enlace -->
-                    <img src="{{ asset('logos/GlifooComunicacion.png') }}" 
+                    <img src="{{ asset('logos/marca_claro.webp') }}" 
                          class="w-36 h-auto mx-auto lg:mx-0 filter brightness-[0.9] transition duration-300 hover:brightness-100" 
                          alt="Logo de reverb">
                 </a>
-                <p class="mt-4 text-sm text-gray-600">Transformamos ideas en realidades digitales.</p>
-            </div>
-            
-            <!-- Columna 2: Servicios -->
-            <div class="footer_col text-center sm:text-left">
-                <!-- h4 | font-size: var(--font-md); color: #0d6efd; margin-bottom: var(--space-sm); -->
-                <h4 class="text-lg font-semibold text-blue-600 uppercase tracking-wider mb-3">Servicios</h4>
-                <ul class="list-none p-0">
-                    <li class="mb-2"><a href="#" class="text-gray-600 text-sm hover:text-blue-600 transition duration-300">Sistemas Informáticos</a></li>
-                    <li class="mb-2"><a href="#" class="text-gray-600 text-sm hover:text-blue-600 transition duration-300">Diseño Gráfico</a></li>
-                    <li class="mb-2"><a href="#" class="text-gray-600 text-sm hover:text-blue-600 transition duration-300">Fotografía</a></li>
-                    <li class="mb-2"><a href="#" class="text-gray-600 text-sm hover:text-blue-600 transition duration-300">Dirección y Estilo</a></li>
-                </ul>
             </div>
 
             <!-- Columna 3: Empresa -->
@@ -227,7 +214,7 @@
             <div class="footer_col text-center sm:text-left">
                 <h4 class="text-lg font-semibold text-blue-600 uppercase tracking-wider mb-3">Contáctanos</h4>
                 <ul class="list-none p-0">
-                    <li class="mb-2 text-sm text-gray-600">info@glifoo.com</li>
+                    <li class="mb-2 text-sm text-gray-600">aurea.com</li>
                     <li class="mb-2 text-sm text-gray-600">+591 123-45678</li>
                     <li class="mb-2 text-sm text-gray-600">La Paz, Bolivia</li>
                 </ul>
@@ -242,7 +229,7 @@
             
             <!-- Texto de Copyright -->
             <p class="text-sm text-gray-600 order-last sm:order-first">
-                &copy; {{ date('Y') }} Glifoo. Todos los derechos reservados.
+                &copy; {{ date('Y') }} Aurea.
             </p>
             
             <!-- Redes Sociales -->

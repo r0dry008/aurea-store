@@ -39,6 +39,7 @@ class ServiceComponent extends Component
     public $imageEdit;
     public $serviceId;
 
+
     public function save()
     {
         $data = $this->validate([

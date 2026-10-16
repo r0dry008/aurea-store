@@ -2,7 +2,7 @@
   <div class="max-w-7xl mx-auto px-8 py-12">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
         <div class="relative bg-[#FDFBF2] rounded-xl p-8 flex justify-center">
-            <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=500" alt="{{ $product->name }}" class="max-h-96 object-contain">
+            <img src="" alt="{{ $product->name }}" class="max-h-96 object-contain">
             @if($this->sumaStockSkus($product->id) == 0)
             <h3 class="absolute top-4 left-4 bg-red-500 text-white font-bold py-1 px-3 rounded-md">Agotado</h3>
             @endif
@@ -89,7 +89,7 @@
                     @foreach ($similarProducts as $similarProduct)
                         <div class="bg-[#FFFDF6] border border-gray-100 rounded-xl p-4 flex flex-col justify-between group transition">
                             <div class="relative bg-[#FDFBF2] rounded-lg aspect-square flex items-center justify-center">
-                                <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=500&auto=format&fit=crop" alt="{{ $similarProduct->name }}" class="object-cover transition duration-700 ease-out group-hover:scale-105 cursor-pointer">
+                                <img src="" alt="{{ $similarProduct->name }}" class="object-cover transition duration-700 ease-out group-hover:scale-105 cursor-pointer">
                             </div>
                             <div>
                                 <a href="{{ route('reverb.product.show', $similarProduct->slug) }}" wire:navigate>

@@ -133,7 +133,7 @@
                     <!-- Imagen de la Categoría -->
                     <div class="aspect-square w-full overflow-hidden bg-gray-100">
                         <img 
-                            src="images/david.jpg" 
+                            src="images/categorias.png" 
                             class="h-full w-full object-cover object-center group-hover:scale-105 transition duration-500"
                         >
                     </div>
